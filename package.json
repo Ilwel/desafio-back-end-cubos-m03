@@ -1,0 +1,13 @@
+{
+  "name": "desafio-back-end-cubos-m03",
+  "version": "1.0.0",
+  "description": "![](https://i.imgur.com/xG74tOh.png)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev":"nodemon index.js"
+  },
+  "keywords": [],
+  "author": "iueu",
+  "license": "ISC"
+}
