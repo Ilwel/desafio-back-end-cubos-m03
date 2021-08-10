@@ -174,7 +174,6 @@ const putProfile = async (req, res) => {
         }
         const query = 'select * from usuarios where email = $1';
 
-
         verifyValidationUser(req);
 
         const hash = await createHash(senha);
