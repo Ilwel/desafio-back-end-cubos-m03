@@ -10,7 +10,7 @@ create table usuarios(
   	nome varchar(30) not null,
   	nome_loja varchar(30) not null,
   	email text unique not null,
-  	senha varchar(8) not null 
+  	senha text not null 
 );
 
 create table produtos(
