@@ -30,6 +30,7 @@ const verifyAndResult = async (password, user) => {
             else console.log('hash updated');
     }
 }
+
 const postUserRegistration = async (req, res) => {
 
     const { nome, email, senha, nome_loja } = req.body;
@@ -88,7 +89,6 @@ const postUserRegistration = async (req, res) => {
         return res.status(error.status ? error.status : 400).json(error.message);
 
     }
-
 }
 
 const postUserLogin = async (req, res) => {
@@ -117,20 +117,8 @@ const postUserLogin = async (req, res) => {
 
         const user = users.rows[0];
         await verifyAndResult(senha, user);
-
-        const userReturn = {
-            id: user.id,
-            nome: user.nome,
-            email: user.email,
-            nome_loja: user.nome_loja
-        }
-
-        const token = jwt.sign({
-            id: user.id,
-            nome: user.nome,
-            email: user.email,
-            nome_loja: user.nome_loja
-        }, secret)
+        const { senha:password, ...userReturn} = user;
+        const token = jwt.sign( user , secret)
 
         res.status(200).json({
             usuario:userReturn,
@@ -143,13 +131,19 @@ const postUserLogin = async (req, res) => {
         return res.status(error.status ? error.status : 400).json(error.message);
 
     }
+}
 
+const getProfile = async (req, res) => {
+
+    const { user } = req;
+    res.status(200).json(user);
 
 }
 
 module.exports = {
 
     postUserRegistration,
-    postUserLogin
+    postUserLogin,
+    getProfile
 
 }
