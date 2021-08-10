@@ -1,5 +1,6 @@
 const db = require('../db');
 const securePassword = require('secure-password');
+const { validationResult } = require('express-validator');
 
 const pwd = securePassword();
 
@@ -24,6 +25,23 @@ const postUserRegistration = async (req, res) => {
             throw {
                 status:400,
                 message: `the email ${email} already exists`
+            }
+        }
+
+        const errors = validationResult(req);
+        if(!errors.isEmpty()){
+            for(error of errors.array()){
+                if(error.param === 'email'){
+                    throw{
+                        status:400,
+                        message:"the 'email' field is invalid"
+                    }
+                }else if(error.param === 'senha'){
+                    throw{
+                        status:400,
+                        message:"the 'senha' field must have at least 8 characters"
+                    }
+                }
             }
         }
 
