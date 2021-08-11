@@ -131,11 +131,47 @@ const putProduct = async (req, res) => {
 
 }
 
+const deleteProduct = async (req, res) => {
+
+    const { user } = req;
+    const { id } = req.params;
+
+    try {
+
+        const query = 'select p.id, p.usuario_id, p.nome, p.estoque, p.categoria, p.preco, p.descricao, p.imagem from produtos p join usuarios u on p.usuario_id = u.id where p.id = $1 and u.id = $2';
+        const products = await db.query(query, [id, user.id]);
+        if(products.rowCount === 0){
+            throw{
+                status:404,
+                message:'product not found'
+            }
+        }
+
+        const query2 = 'delete from produtos where id = $1';
+        const productDeleted = await db.query(query2, [id]); 
+        if(productDeleted.rows === 0) {
+            throw{
+                status:400,
+                message:`the product was not been deleted`
+            }
+        }
+        return res.status(200).json(`the product has been delted`);
+
+        
+    } catch (error) {
+        
+        return res.status(error.status ? error.status : 400).json(error.message);
+        
+    }
+
+}
+
 module.exports = {
 
     getProducts,
     getProductById,
     postProduct,
-    putProduct
+    putProduct,
+    deleteProduct
 
 }
