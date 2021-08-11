@@ -11,7 +11,10 @@ router.post('/login', users.postUserLogin);
 router.get('/perfil', checkLogin ,users.getProfile);
 router.put('/perfil', checkLogin,  body('email').isEmail(), body('senha').isLength({min:8}), users.putProfile);
 
+// router.get('', (req, res) => req.params)
+
 //products routs
 router.get('/produtos', checkLogin, products.getProducts);
+router.get('/produtos/:id', checkLogin, products.getProductById);
 
 module.exports = router;
