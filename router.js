@@ -15,5 +15,6 @@ router.put('/perfil', checkLogin,  body('email').isEmail(), body('senha').isLeng
 router.get('/produtos', checkLogin, products.getProducts);
 router.get('/produtos/:id', checkLogin, products.getProductById);
 router.post('/produtos', checkLogin, products.postProduct);
+router.put('/produtos/:id', checkLogin, products.putProduct);
 
 module.exports = router;
