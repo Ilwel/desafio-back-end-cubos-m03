@@ -51,9 +51,45 @@ const getProductById = async (req, res) => {
 
 }
 
+const postProduct = async (req, res) => {
+    
+    const { user } = req;
+    const { nome, estoque, categoria, preco, descricao, imagem } = req.body;
+    const fields = { nome, estoque, preco, descricao };
+    
+    try {
+        
+        Object.entries(fields).map(([field, value]) => {
+            if (!value) {
+                throw {
+                    status: 400,
+                    message: `fill the field ${field}`
+                }
+            }
+        })
+
+        const query = 'insert into produtos (usuario_id, nome, estoque, categoria, preco, descricao, imagem) values ($1, $2, $3, $4, $5, $6, $7)';
+        const productInsert = await db.query(query, [user.id, nome, estoque, categoria, preco, descricao, imagem]);
+        if(productInsert.rows === 0){
+            throw {
+                status: 400,
+                message: `the ${nome} product was not been registered`
+            }
+        }
+
+        return res.status(200).json(`the ${nome} product has been registered`);
+        
+    } catch (error) {
+
+        return res.status(error.status ? error.status : 400).json(error.message);
+        
+    }
+}
+
 module.exports = {
 
     getProducts,
     getProductById,
+    postProduct
 
 }
